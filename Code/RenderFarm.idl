@@ -1,0 +1,97 @@
+//##############################################################################
+//#
+//# RenderFarm : written by Anup Jayapal Rao 
+//#		e-mail id:	anup.kadam <at> gmail.com, anup_kadam <at> yahoo.com, ar210 <at> sussex.ac.uk
+//#
+//#	Written for the purpose of the Distributed systems assignment at the University Of Sussex, 2008.
+//#
+//###############################################################################
+
+// IDL for RenderFarm
+module RenderFarm
+{
+	// Client states 
+	enum eClientStates 
+	{ 
+		TC_UNINITIALISED, 
+		TC_INITIALISED,
+		TC_WAITING,
+		TC_PREPARED,
+		TC_RENDER_IN_PROGRESS,
+		TC_FRAME_FORWARDING,
+		TC_COMPLETE
+	};
+	
+	// State of Frame
+	enum eFrameStates 
+	{ 
+		FRAME_CLIENT_IDLE,
+		FRAME_WAITING,
+		FRAME_DOWNLOADING, 
+		FRAME_RENDERING,
+		FRAME_FORWARDING,
+		FRAME_COLLECTED,
+		FRAME_SCENE_COMPLETE
+	};
+		
+	// Value of completion flags
+	const short RENDERTASK_COMPLETE = -1;
+	const short RENDERJOB_COMPLETE = -2;
+	
+	// File chunk used for transfer
+	typedef sequence<octet>  tChunk;
+		
+	// Interfaces for Render Server
+	interface iRenderServer
+	{
+		// Methods to obtain details
+		string GetHostName();	
+		string GetHostIPaddress();
+		short GetFTPServerPort();	
+		boolean IsInTestMode();
+		
+		// Functions for communicating with Frame Server
+		void AddFrameServer(in string strFrameServerName);
+		string GetNameOfAssociatedFrameServer();
+		void SetFrameAsComplete(in short nFrameIndex);
+		
+		// Register functions
+		boolean AddJobMonitor(in string strJobMonitorName);
+			
+		// Functions for obtaining Job Details
+		boolean GetJobDetails(in short nJobIndex,out string strJobFile, out long nFileSize, out string strExt, out short nStartFrameIndex, out short nEndFrameIndex );
+		short GetFrameToRender(in string strClientName, inout string strSceneName);
+		eClientStates GetNextState(in string strClientName, in eClientStates nClientStatus);		
+	};	
+	
+	// Interfaces for Frame Server
+	interface iFrameServer
+	{
+		// Methods to obtain details
+		string GetName();
+		string GetHostName();
+		
+		// Register functions
+		boolean AddJobMonitor(in string strJobMonitorName);
+		
+		// Functions to handle rendered frames
+		boolean CreateFrameHandle(in short nJobIndex, in short nFrameIndex, in string strhashDigest, in long nFileSize);
+		boolean AppendFrameChunk(in short nJobIndex, in short nFrameIndex, in short nLength, in tChunk seqChunk);
+		boolean IsFrameTransferOk(in short nJobIndex, in short nFrameIndex);
+	};	
+	
+	// Interfaces for Job Monitor
+	interface iJobMonitor
+	{
+		// Function to update status of client
+		boolean UpdateStatus(in short nJobIndex, in string strClientName, in short nFrameIndex, in eFrameStates nFrameStatus);
+	};
+		
+	// Interfaces for Render Client
+	interface iRenderClient
+	{
+		// Methods to obtain details 
+		string GetName();
+		string GetHostName();
+	};
+};
