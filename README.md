@@ -8,11 +8,12 @@ Summary: A Python and CORBA based renderfarm
 
 #### *A Python and CORBA based renderfarm implementation released under GPL V2*
 
-[Download Documentation Part 1](|filename|/extras/pdfs/akashganga/AkashGangaExplanation.pdf) Contains coursework research and observation material
+[Download Documentation Part 1](http://www.arkntek.in/extras/pdfs/akashganga/AkashGangaExplanation.pdf) Contains coursework research and observation material
 
-[Download Documentation Part 2](|filename|/extras/pdfs/akashganga/AkashGangaCode.pdf) Contains source code in printer friendly formm
+[Download Documentation Part 2](http://www.arkntek.in/extras/pdfs/akashganga/AkashGangaCode.pdf) Contains source code in printer friendly formm
 
-[Click on this line to go to the code repository](http://hg.arkntek.in/akashganga)
+[Click on this line to go to the code repository on Github](https://github.com/pixelhaze/akashganga)
+[Click on this line to go to the code repository on Bitbucket](http://hg.arkntek.in/akashganga)
 
 <br/>
 <br/>
